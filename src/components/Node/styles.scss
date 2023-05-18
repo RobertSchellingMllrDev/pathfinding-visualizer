@@ -1,3 +1,21 @@
+.bg {
+  &--blue {
+    background: #2600ff;
+  }
+
+  &--red {
+    background: #ff0000;
+  }
+
+  &--black {
+    background: #000000;
+  }
+
+  &--white {
+    background: #fff;
+  }
+}
+
 .square {
   border: 0.5px solid #cdcccc;
   height: 25px;
