@@ -1,0 +1,133 @@
+.square {
+  border: 0.5px solid #cdcccc;
+  height: 25px;
+  padding: 0;
+  margin-top: -3px;
+  width: 25px;
+  transition: outline 0.1s, z-index 0.1s, position 0.1s, border 0.05s;
+
+  &--black-anim {
+    @extend .square;
+    animation-name: blackNodeAnimation;
+    animation-duration: 0.1s;
+  }
+  &--white-anim {
+    @extend .square;
+    animation-name: whiteNodeAnimation;
+    animation-duration: 0.1s;
+  }
+  &--blue-anim {
+    @extend .square;
+    animation-name: blueNodeAnimation;
+    animation-duration: 0.1s;
+  }
+  &--red-anim {
+    @extend .square;
+    animation-name: redNodeAnimation;
+    animation-duration: 0.1s;
+  }
+}
+
+@keyframes blackNodeAnimation {
+  0% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+    outline: 0px solid #000000;
+  }
+
+  30% {
+    outline: 2px solid #000000;
+  }
+
+  90% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+  }
+
+  100% {
+    border: 0.5px solid #cdcccc;
+    z-index: 0;
+    position: static;
+    outline: 0px solid #000000;
+  }
+}
+
+@keyframes whiteNodeAnimation {
+  0% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+    outline: 0px solid #ffffff;
+  }
+
+  30% {
+    outline: 2px solid #ffffff;
+  }
+
+  90% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+  }
+
+  100% {
+    border: 0.5px solid #cdcccc;
+    z-index: 0;
+    position: static;
+    outline: 0px solid #ffffff;
+  }
+}
+
+@keyframes blueNodeAnimation {
+  0% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+    outline: 0px solid #ffffff;
+  }
+
+  30% {
+    outline: 2px solid #ffffff;
+  }
+
+  90% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+  }
+
+  100% {
+    border: 0.5px solid #cdcccc;
+    z-index: 0;
+    position: static;
+    outline: 0px solid #ffffff;
+  }
+}
+
+@keyframes redNodeAnimation {
+  0% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+    outline: 0px solid #ffffff;
+  }
+
+  30% {
+    outline: 2px solid #ffffff;
+  }
+
+  90% {
+    border: 0.5px solid transparent;
+    z-index: 1;
+    position: relative;
+  }
+
+  100% {
+    border: 0.5px solid #cdcccc;
+    z-index: 0;
+    position: static;
+    outline: 0px solid #ffffff;
+  }
+}
