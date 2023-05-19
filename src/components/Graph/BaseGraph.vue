@@ -2,7 +2,7 @@
   <center>
     <div
       v-for="row in nodes"
-      :key="key++"
+      :key="row.toString()"
       @mousedown="() => mouseDownHandler()"
       @mouseup="() => mouseUpHandler()"
       @mouseleave="() => mouseLeaveHandler"
@@ -10,7 +10,7 @@
       <BaseNode
         @selectedSquare="(p) => mouseEnterHandler(p)"
         v-for="item in row"
-        :key="key++"
+        :key="item.cords.toString()"
         :is-mouse-down="item.isMouseDown"
         :cords="item.cords"
         :is-mouse-over="item.isMouseOver"
@@ -53,13 +53,11 @@ function mouseUpHandler() {
 }
 function mouseEnterHandler(cords: any) {
   selectedSquare.value = cords
-  if (isMouseDown.value) {
-    nodes.value.forEach((row) => {
-      row.forEach((node) => {
-        node = recalculateNodes(node)
-      })
+  nodes.value.forEach((row) => {
+    row.forEach((node) => {
+      node = recalculateNodes(node)
     })
-  }
+  })
 }
 function initNodes({ height, width }: { width: number; height: number }) {
   var list: Array<Array<NodeProps>> = []
@@ -86,7 +84,7 @@ function initNodes({ height, width }: { width: number; height: number }) {
 }
 
 function recalculateNodes(node: NodeProps) {
-  node.isMouseOver = selectedSquare.toString() === node.cords.toString()
+  node.isMouseOver = selectedSquare.value.toString() === node.cords.toString()
   node.isMouseDown = isMouseDown.value
   if (node.isMouseDown && node.isMouseOver) {
     if (selectedSquare.value.toString() === startCords.value.toString()) {
@@ -118,7 +116,7 @@ function recalculateNodes(node: NodeProps) {
         break
     }
   }
-  if (!isMouseDown) {
+  if (!isMouseDown.value) {
     currentEdit.value = EditOptions.Wall
   }
 

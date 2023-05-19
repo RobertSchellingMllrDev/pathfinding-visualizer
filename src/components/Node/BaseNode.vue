@@ -10,6 +10,8 @@ import Colors from '@/core/enums/Colors'
 import NodeType from '@/core/enums/NodeType'
 import type { NodeProps } from '@/core/interfaces/NodeProps'
 import { changeColor } from '@/service/ColorService'
+import { onRenderTriggered } from 'vue'
+import { onUpdated } from 'vue'
 import { onMounted, ref } from 'vue'
 
 const props = defineProps<NodeProps>()
@@ -34,7 +36,7 @@ function getColorClass() {
   return changeColor(color.value)
 }
 
-onMounted(() => {
+onRenderTriggered(() => {
   console.log('RENDER NODE')
 })
 </script>
