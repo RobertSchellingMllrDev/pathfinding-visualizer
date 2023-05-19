@@ -1,8 +1,5 @@
 <template>
-  <button
-    :class="'square' + getAnimClass() + getColorClass()"
-    @mouseenter="$emit('selectedSquare', props.cords)"
-  ></button>
+  <button :class="getClass()" @mouseenter="$emit('selectedSquare', props.cords)"></button>
 </template>
 
 <script lang="ts" setup>
@@ -18,6 +15,12 @@ const props = defineProps<NodeProps>()
 
 const color = ref(Colors.White)
 
+function getClass() {
+  var colorClass = getColorClass()
+  var animClass = getAnimClass()
+  return 'square' + animClass + colorClass
+}
+
 function getColorClass() {
   switch (props.nodeType) {
     case NodeType.Goal:
@@ -29,17 +32,21 @@ function getColorClass() {
     case NodeType.Wall:
       color.value = Colors.Black
       break
+    case NodeType.Visited:
+      color.value = Colors.Green
+      break
+    case NodeType.Path:
+      color.value = Colors.Yellow
+      break
     case NodeType.Empty:
       color.value = Colors.White
       break
   }
   return changeColor(color.value)
 }
+
 function getAnimClass() {
-  if (props.isMouseDown) {
-    return changeAnim(color.value)
-  }
-  return ''
+  return changeAnim(color.value)
 }
 onRenderTriggered(() => {
   console.log('RENDER NODE')

@@ -1,10 +1,10 @@
 class Queue<T> {
-  queue: Array<T> = [];
+  queue: T[] = []
   pop() {
-    return this.queue.shift();
+    return this.queue.shift()
   }
-  put(value: T) {
-    return this.queue.push();
+  put(value: T): void {
+    this.queue.push(value)
   }
 }
-export default Queue;
+export default Queue

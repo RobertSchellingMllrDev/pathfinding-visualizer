@@ -5,9 +5,6 @@ interface NodeProps {
   isMouseDown: boolean
   isMouseOver: boolean
   nodeType: NodeType
-  onMouseDownHandler: any
-  onMouseEnterHandler: any
-  onMouseLeaveHandler: any
 }
 
 export type { NodeProps }

@@ -2,8 +2,9 @@ enum NodeType {
   Wall,
   Goal,
   Start,
-  Traversed,
-  Empty,
+  Visited,
+  Path,
+  Empty
 }
 
-export default NodeType;
+export default NodeType

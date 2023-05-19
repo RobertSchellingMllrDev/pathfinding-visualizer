@@ -1,5 +1,6 @@
 <template>
   <center>
+    <button @click="breadthFirstHandler()">START ALGO</button>
     <div
       v-for="row in nodes"
       :key="row.toString()"
@@ -15,9 +16,6 @@
         :cords="item.cords"
         :is-mouse-over="item.isMouseOver"
         :node-type="item.nodeType"
-        :on-mouse-down-handler="undefined"
-        :on-mouse-enter-handler="undefined"
-        :on-mouse-leave-handler="undefined"
       >
       </BaseNode>
     </div>
@@ -30,6 +28,8 @@ import BaseNode from '../Node/BaseNode.vue'
 import NodeType from '@/core/enums/NodeType'
 import type { NodeProps } from '@/core/interfaces/NodeProps'
 import EditOptions from '@/core/enums/EditOptions'
+import { breadthFirst } from '@/algos/breadthFirst'
+import type { INode } from '@/core/interfaces/INode'
 
 const selectedSquare = ref<Array<number>>([])
 const startCords = ref([5, 3])
@@ -38,6 +38,73 @@ const currentEdit = ref(EditOptions.Wall)
 const isMouseDown = ref(false)
 const nodes = ref(initNodes({ height: 30, width: 50 }))
 
+function breadthFirstHandler() {
+  var startNode: INode | undefined = {
+    cords: nodes.value[startCords.value[0]][startCords.value[1]].cords,
+    isGoal: nodes.value[startCords.value[0]][startCords.value[1]].nodeType === NodeType.Goal,
+    isVisited: false,
+    isWall: nodes.value[startCords.value[0]][startCords.value[1]].nodeType === NodeType.Wall
+  }
+  var graph: Array<Array<INode>> = []
+  nodes.value.forEach((row, index) => {
+    graph[index] = []
+    row.forEach((item, index2) => {
+      graph[index][index2] = {
+        cords: item.cords,
+        isGoal: item.nodeType === NodeType.Goal,
+        isWall: item.nodeType === NodeType.Wall,
+        isVisited: item.nodeType === NodeType.Visited
+      }
+    })
+  })
+  var generator = breadthFirst({ startNode: startNode, graph: graph })
+  breadthFirstLoop(generator)
+}
+
+function breadthFirstLoop(g: Generator) {
+  setTimeout(() => {
+    var value = g.next().value
+    if (typeof value === 'boolean') {
+      var result = g.next().value
+      console.log(result)
+      setBreadthFirstPath(result.cameFrom, result.goalNode)
+    } else {
+      setVisitedNodes(value ? value : [])
+      breadthFirstLoop(g)
+    }
+  }, 10)
+}
+function setBreadthFirstPath(
+  cameFrom: { [key: string]: INode | undefined },
+  node: INode | undefined
+) {
+  setTimeout(() => {
+    if (node?.cords.toString() === startCords.value.toString()) {
+      console.log('FINISHED')
+    } else if (node != undefined) {
+      const current = cameFrom[node.cords.toString()]
+      if (current != undefined) {
+        if (
+          nodes.value[current.cords[0]][current.cords[1]].nodeType != NodeType.Goal &&
+          nodes.value[current.cords[0]][current.cords[1]].nodeType != NodeType.Start
+        ) {
+          nodes.value[current.cords[0]][current.cords[1]].nodeType = NodeType.Path
+        }
+        setBreadthFirstPath(cameFrom, current)
+      }
+    }
+  }, 50)
+}
+function setVisitedNodes(frontier: INode[]) {
+  frontier.forEach((item) => {
+    if (
+      nodes.value[item.cords[0]][item.cords[1]].nodeType != NodeType.Goal &&
+      nodes.value[item.cords[0]][item.cords[1]].nodeType != NodeType.Start
+    ) {
+      nodes.value[item.cords[0]][item.cords[1]].nodeType = NodeType.Visited
+    }
+  })
+}
 function mouseDownHandler() {
   isMouseDown.value = true
   nodes.value[selectedSquare.value[0]][selectedSquare.value[1]] = recalculateNodes(
@@ -87,10 +154,7 @@ function initNodes({ height, width }: { width: number; height: number }) {
             ? NodeType.Start
             : [i, j].toString() === goalCords.value.toString()
             ? NodeType.Goal
-            : NodeType.Empty,
-        onMouseDownHandler: undefined,
-        onMouseEnterHandler: undefined,
-        onMouseLeaveHandler: undefined
+            : NodeType.Empty
       }
     }
   }
@@ -141,6 +205,10 @@ function recalculateNodes(node: NodeProps) {
       ? NodeType.Goal
       : node.nodeType === NodeType.Wall
       ? NodeType.Wall
+      : node.nodeType === NodeType.Visited
+      ? NodeType.Visited
+      : node.nodeType === NodeType.Path
+      ? NodeType.Path
       : NodeType.Empty
   return node
 }
