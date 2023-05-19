@@ -36,14 +36,18 @@ const startCords = ref([5, 3])
 const goalCords = ref([6, 7])
 const currentEdit = ref(EditOptions.Wall)
 const isMouseDown = ref(false)
-const key = 0
 const nodes = ref(initNodes({ height: 30, width: 50 }))
-const trackSelectedSquare = (id: Array<number>) => {
-  selectedSquare.value = id
-}
 
 function mouseDownHandler() {
   isMouseDown.value = true
+  nodes.value[selectedSquare.value[0]][selectedSquare.value[1]] = recalculateNodes(
+    nodes.value[selectedSquare.value[0]][selectedSquare.value[1]]
+  )
+  // nodes.value.forEach((row) => {
+  //   row.forEach((node) => {
+  //     node = recalculateNodes(node)
+  //   })
+  // })
 }
 function mouseLeaveHandler() {
   isMouseDown.value = false
@@ -52,12 +56,22 @@ function mouseUpHandler() {
   isMouseDown.value = false
 }
 function mouseEnterHandler(cords: any) {
+  // nodes.value[selectedSquare.value[0]][selectedSquare.value[1]] = recalculateNodes(
+  //   nodes.value[selectedSquare.value[0]][selectedSquare.value[1]]
+  // )
+  var prevCords = selectedSquare.value
   selectedSquare.value = cords
-  nodes.value.forEach((row) => {
-    row.forEach((node) => {
-      node = recalculateNodes(node)
-    })
-  })
+  nodes.value[cords[0]][cords[1]] = recalculateNodes(nodes.value[cords[0]][cords[1]])
+  nodes.value[prevCords[0]][prevCords[1]] = recalculateNodes(
+    nodes.value[prevCords[0]][prevCords[1]]
+  )
+  // console.log('PREVIOUS ' + prevCords.toString())
+  // console.log('CURRENT' + cords.toString())
+  // nodes.value.forEach((row) => {
+  //   row.forEach((node) => {
+  //     node = recalculateNodes(node)
+  //   })
+  // })
 }
 function initNodes({ height, width }: { width: number; height: number }) {
   var list: Array<Array<NodeProps>> = []

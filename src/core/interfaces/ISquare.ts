@@ -1,4 +1,4 @@
-import Colors from '../../core/enums/Colors'
+import Colors from '../enums/Colors'
 
 interface ISquare {
   color: Colors

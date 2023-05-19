@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="'square' + getColorClass()"
+    :class="'square' + getAnimClass() + getColorClass()"
     @mouseenter="$emit('selectedSquare', props.cords)"
   ></button>
 </template>
@@ -9,10 +9,10 @@
 import Colors from '@/core/enums/Colors'
 import NodeType from '@/core/enums/NodeType'
 import type { NodeProps } from '@/core/interfaces/NodeProps'
+import { changeAnim } from '@/service/AnimService'
 import { changeColor } from '@/service/ColorService'
 import { onRenderTriggered } from 'vue'
-import { onUpdated } from 'vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<NodeProps>()
 
@@ -35,7 +35,12 @@ function getColorClass() {
   }
   return changeColor(color.value)
 }
-
+function getAnimClass() {
+  if (props.isMouseDown) {
+    return changeAnim(color.value)
+  }
+  return ''
+}
 onRenderTriggered(() => {
   console.log('RENDER NODE')
 })
