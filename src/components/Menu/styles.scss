@@ -1,0 +1,20 @@
+.menu {
+  background: #000000;
+  opacity: 0.5;
+  width: 100vw;
+  height: 5vh;
+}
+
+.drop-down {
+  background: #ffffff;
+  &--active {
+    @extend .drop-down;
+  }
+  &--inActive {
+    @extend .drop-down;
+    display: none;
+  }
+}
+.drop-down-button {
+  display: inline;
+}

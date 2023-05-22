@@ -1,7 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BaseGraph from './components/Graph/BaseGraph.vue'
+import BaseMenu from './components/Menu/BaseMenu.vue'
+</script>
 
 <template>
-  <RouterView />
+  <BaseMenu></BaseMenu>
+  <BaseGraph></BaseGraph>
 </template>
 
-<style></style>
+<style lang="scss">
+@import './baseStyles.scss';
+</style>

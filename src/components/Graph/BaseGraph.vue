@@ -36,7 +36,7 @@ const startCords = ref([5, 3])
 const goalCords = ref([6, 7])
 const currentEdit = ref(EditOptions.Wall)
 const isMouseDown = ref(false)
-const nodes = ref(initNodes({ height: 30, width: 50 }))
+const nodes = ref(initNodes({ height: 20, width: 40 }))
 
 function breadthFirstHandler() {
   var startNode: INode | undefined = {
@@ -72,7 +72,7 @@ function breadthFirstLoop(g: Generator) {
       setVisitedNodes(value ? value : [])
       breadthFirstLoop(g)
     }
-  }, 10)
+  }, 20)
 }
 function setBreadthFirstPath(
   cameFrom: { [key: string]: INode | undefined },
@@ -110,11 +110,6 @@ function mouseDownHandler() {
   nodes.value[selectedSquare.value[0]][selectedSquare.value[1]] = recalculateNodes(
     nodes.value[selectedSquare.value[0]][selectedSquare.value[1]]
   )
-  // nodes.value.forEach((row) => {
-  //   row.forEach((node) => {
-  //     node = recalculateNodes(node)
-  //   })
-  // })
 }
 function mouseLeaveHandler() {
   isMouseDown.value = false
@@ -123,22 +118,12 @@ function mouseUpHandler() {
   isMouseDown.value = false
 }
 function mouseEnterHandler(cords: any) {
-  // nodes.value[selectedSquare.value[0]][selectedSquare.value[1]] = recalculateNodes(
-  //   nodes.value[selectedSquare.value[0]][selectedSquare.value[1]]
-  // )
   var prevCords = selectedSquare.value
   selectedSquare.value = cords
   nodes.value[cords[0]][cords[1]] = recalculateNodes(nodes.value[cords[0]][cords[1]])
   nodes.value[prevCords[0]][prevCords[1]] = recalculateNodes(
     nodes.value[prevCords[0]][prevCords[1]]
   )
-  // console.log('PREVIOUS ' + prevCords.toString())
-  // console.log('CURRENT' + cords.toString())
-  // nodes.value.forEach((row) => {
-  //   row.forEach((node) => {
-  //     node = recalculateNodes(node)
-  //   })
-  // })
 }
 function initNodes({ height, width }: { width: number; height: number }) {
   var list: Array<Array<NodeProps>> = []
@@ -177,17 +162,9 @@ function recalculateNodes(node: NodeProps) {
         break
       case EditOptions.Start:
         startCords.value = selectedSquare.value
-        // node.nodeType =
-        //   startCords.current.toString() === node.cords.toString()
-        //     ? NodeType.Start
-        //     : node.nodeType;
         break
       case EditOptions.Goal:
         goalCords.value = selectedSquare.value
-        // node.nodeType =
-        //   goalCords.current.toString() === node.cords.toString()
-        //     ? NodeType.Goal
-        //     : node.nodeType;
         break
       default:
         node.nodeType = NodeType.Empty
